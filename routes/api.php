@@ -20,11 +20,12 @@ use App\Http\Controllers\API\GameController;
 //    return $request->user();
 //});
 
-Route::controller(RegisterController::class)->group(function(){
+Route::controller(RegisterController::class)->group(function() {
     Route::post('register', 'register');
     Route::post('login', 'login');
 });
 
-Route::middleware('auth:sanctum')->group( function () {
-    Route::resource('games', API\GameController::class);
+Route::middleware('auth:sanctum')->group(function() {
+    Route::apiResource('games', GameController::class);
+    Route::get('games/type/{type}', [GameController::class, 'getGamesByType']);
 });

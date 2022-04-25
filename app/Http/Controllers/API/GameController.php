@@ -6,8 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\GameRequest;
 use Illuminate\Http\Request;
 use App\Models\Game;
-use App\Models\GameType;
-use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Support\Facades\Validator;
 
 class GameController extends Controller
 {
@@ -16,7 +15,7 @@ class GameController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(): \Illuminate\Http\JsonResponse
     {
         $games = Game::with('types')->paginate();
         return response()->json($games, 200);
@@ -28,8 +27,18 @@ class GameController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(GameRequest $request): \Illuminate\Http\JsonResponse
+    public function store(Request $request): \Illuminate\Http\JsonResponse
     {
+        $validator = Validator::make($request->all(), [
+            'name'        => 'required|min:3|max:50',
+            'studio'      => 'required|min:3|max:255',
+            'types'       => 'required|array|min:1',
+        ]);
+
+        if ($validator->fails()){
+            return $this->validError($validator->errors());
+        }
+
         $game = new Game;
         $game->name   = $request->name;
         $game->studio = $request->studio;
@@ -43,21 +52,15 @@ class GameController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id): \Illuminate\Http\JsonResponse
+    public function show(int $id): \Illuminate\Http\JsonResponse
     {
-        $game = Game::find($id);
+        $game = Game::with('types')->find($id);
 
         if (is_null($game)) {
-
-            $response = [
-                'success' => false,
-                'message' => 'Игра не найдена.',
-            ];
-
-            return response()->json($response, 404);
+            return  $this->gameNotFound();
         }
 
         return response()->json($game, 200);
@@ -66,45 +69,67 @@ class GameController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request): \Illuminate\Http\JsonResponse
+    public function update(Request $request, $id): \Illuminate\Http\JsonResponse
     {
-        $game = Game::find($request->id);
+
+        $game = Game::find($id);
 
         if (is_null($game)) {
-
-            $response = [
-                'success' => false,
-                'message' => 'Игра не найдена.',
-            ];
-
-            return response()->json($response, 404);
-
-        } else {
-
-            $game->name   = $request->name;
-            $game->studio = $request->studio;
-            $game->save();
-
-            $game->types()->sync($request->types);
-
-            return response()->json('Игра успешно отредактирована - '.$game->name, 200);
+            return  $this->gameNotFound();
         }
 
+        $validator = Validator::make($request->all(), [
+            'name'        => 'required|min:3|max:50',
+            'studio'      => 'required|min:3|max:255',
+            'types'       => 'required|array|min:1',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->validError($validator->errors());
+        }
+
+        $game->name   = $request->name;
+        $game->studio = $request->studio;
+        $game->save();
+
+        $game->types()->sync($request->types);
+
+        return response()->json('Игра успешно отредактирована - '.$game->name, 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy(int $id): \Illuminate\Http\JsonResponse
     {
         $game = Game::find($id);
+
+        if (is_null($game)) {
+            return  $this->gameNotFound();
+        }
+
         $game->delete();
         return response()->json('Игра удалена - '.$game->name, 200);
     }
+
+    public function getGamesByType($type): \Illuminate\Http\JsonResponse
+    {
+        $games = Game::with('types')->whereHas('types', function ($query) use ($type) {
+            $query->where('name', $type);
+        })->get();
+
+        if ($games->isEmpty()) {
+            return  $this->gameNotFound($type);
+        }
+
+        return response()->json($games, 200);
+    }
+
 }

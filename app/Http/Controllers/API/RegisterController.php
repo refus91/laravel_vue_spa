@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
@@ -20,7 +20,7 @@ class RegisterController extends Controller
         $validator = Validator::make($request->all(), [
             'name'        => 'required|min:3|max:50',
             'email'       => 'required|email',
-            'password'    => 'required',
+            'password'    => 'required|min:3',
             'c_password'  => 'required|same:password',
         ]);
 
@@ -80,7 +80,7 @@ class RegisterController extends Controller
 
             $response = [
                 'success' => false,
-                'message' => 'Отказ авторизации.',
+                'message' => 'Отказано в авторизации.',
                 'data'    => ['error'  =>  'Отказ авторизации'],
             ];
 

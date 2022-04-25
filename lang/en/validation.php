@@ -43,7 +43,7 @@ return [
     'digits_between' => 'The :attribute must be between :min and :max digits.',
     'dimensions' => 'The :attribute has invalid image dimensions.',
     'distinct' => 'The :attribute field has a duplicate value.',
-    'email' => 'The :attribute must be a valid email address.',
+    'email' => ':attribute должен быть валидным.',
     'ends_with' => 'The :attribute must end with one of the following: :values.',
     'enum' => 'The selected :attribute is invalid.',
     'exists' => 'The selected :attribute is invalid.',
@@ -153,6 +153,21 @@ return [
             'required'  => 'Обязательное поле',
             'min'       => 'Слишком короткое название, минимум :min символа',
             'max'       => 'Слишком длинное название, максимум :max символов',
+        ],
+        'types' => [
+            'required'  => 'Обязательное поле',
+            'min'       => 'Слишком короткое название, минимум :min символа',
+        ],
+        'email' => [
+            'required'  => 'Обязательное поле',
+        ],
+        'password' => [
+            'required'  => 'Обязательное поле',
+
+        ],
+        'c_password' => [
+            'required'  => 'Обязательное поле',
+
         ],
     ],
 
