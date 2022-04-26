@@ -45,7 +45,7 @@ js-фреймворки (jQuery, react, vue, и.т.д) отсутствуют.
 
 - Method: POST
 
-- Перейдите на вкладу Body и выберите form-data
+- Перейдите на вкладку Body и выберите form-data
     
     |                   |  **key**   |             **value**             |
     |-------------------|:----------:|:---------------------------------:|
@@ -54,7 +54,7 @@ js-фреймворки (jQuery, react, vue, и.т.д) отсутствуют.
     | Введите пароль:   |  password  |      текст, мин - 3 символа       |
     | Повторите пароль: | c_password |      текст, мин - 3 символа       |
 
-- Вы получите токен например, ``1|FLolPZ7eg1LGixtlRR1AE3TTAg2HU9DvDWP7maX3``
+- Вы получите токен, например, ``1|FLolPZ7eg1LGixtlRR1AE3TTAg2HU9DvDWP7maX3``
 - Запомните имя и почтовый адрес, запишите токен - он понадобится для авторизации на других маршутах
 
 #### Авторизация
@@ -63,7 +63,7 @@ js-фреймворки (jQuery, react, vue, и.т.д) отсутствуют.
 
 - Method: POST
 
-- Перейдите на вкладу Body и выберите form-data
+- Перейдите на вкладку Body и выберите form-data
 
   |                 |  **key** |                       **value**                      |
   |-----------------|:--------:|:----------------------------------------------------:|
@@ -78,7 +78,7 @@ js-фреймворки (jQuery, react, vue, и.т.д) отсутствуют.
 
 - Method: GET
 
-- Перейдите на вкладу Headers
+- Перейдите на вкладку Headers
 
 - Введите токен: key => Authorization, value => 'Bearer '.$accessToken
   должна получится строка вида - ``Bearer 1\|FLolPZ7eg1LGixtlRR1AE3TTAg2HU9DvDWP7maX3``
@@ -89,12 +89,12 @@ js-фреймворки (jQuery, react, vue, и.т.д) отсутствуют.
 
 - Method: POST
 
-- Перейдите на вкладу Headers
+- Перейдите на вкладку Headers
 
 - Введите токен: key => Authorization, value => 'Bearer '.$accessToken
   должна получится строка вида - ``Bearer 1\|FLolPZ7eg1LGixtlRR1AE3TTAg2HU9DvDWP7maX3``
 
-- Перейдите на вкладу Body и выберите form-data
+- Перейдите на вкладку Body и выберите form-data
 
   |                          | **key** |              **value**             |
   |--------------------------|:-------:|:----------------------------------:|
@@ -108,7 +108,7 @@ js-фреймворки (jQuery, react, vue, и.т.д) отсутствуют.
 
 - Method: GET
 
-- Перейдите на вкладу Headers
+- Перейдите на вкладку Headers
 
 - Введите токен: key => Authorization, value => 'Bearer '.$accessToken
   должна получится строка вида - ``Bearer 1\|FLolPZ7eg1LGixtlRR1AE3TTAg2HU9DvDWP7maX3``
@@ -119,12 +119,12 @@ js-фреймворки (jQuery, react, vue, и.т.д) отсутствуют.
 
 - Method: POST
 
-- Перейдите на вкладу Headers
+- Перейдите на вкладку Headers
 
 - Введите токен: key => Authorization, value => 'Bearer '.$accessToken
   должна получится строка вида - ``Bearer 1\|FLolPZ7eg1LGixtlRR1AE3TTAg2HU9DvDWP7maX3``
 
-- Перейдите на вкладу Body и выберите form-data
+- Перейдите на вкладку Body и выберите form-data
 
   |                          | **key** |              **value**             |
   |--------------------------|:-------:|:----------------------------------:|
@@ -139,7 +139,7 @@ js-фреймворки (jQuery, react, vue, и.т.д) отсутствуют.
 
 - Method: DELETE
 
-- Перейдите на вкладу Headers
+- Перейдите на вкладку Headers
 
 - Введите токен: key => Authorization, value => 'Bearer '.$accessToken
   должна получится строка вида - ``Bearer 1\|FLolPZ7eg1LGixtlRR1AE3TTAg2HU9DvDWP7maX3``
@@ -150,7 +150,7 @@ js-фреймворки (jQuery, react, vue, и.т.д) отсутствуют.
 
 - Method: GET
 
-- Перейдите на вкладу Headers
+- Перейдите на вкладку Headers
 
 - Введите токен: key => Authorization, value => 'Bearer '.$accessToken
   должна получится строка вида - ``Bearer 1\|FLolPZ7eg1LGixtlRR1AE3TTAg2HU9DvDWP7maX3``
