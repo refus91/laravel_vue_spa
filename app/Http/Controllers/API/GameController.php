@@ -4,9 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GameRequest;
-use Illuminate\Http\Request;
 use App\Models\Game;
-use Illuminate\Support\Facades\Validator;
 
 class GameController extends Controller
 {
@@ -27,26 +25,13 @@ class GameController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request): \Illuminate\Http\JsonResponse
+    public function store(GameRequest $request): \Illuminate\Http\JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'name'        => 'required|min:3|max:50',
-            'studio'      => 'required|min:3|max:255',
-            'types'       => 'required|array|min:1',
-        ]);
-
-        if ($validator->fails()){
-            return $this->validError($validator->errors());
-        }
-
-        $game = new Game;
-        $game->name   = $request->name;
-        $game->studio = $request->studio;
-        $game->save();
+        $game = Game::create($request->all());
 
         $game->types()->sync($request->types);
 
-        return response()->json('Игра успешно добавлена', 200);
+        return  $this->sendSuccess('Игра успешно добавлена',);
     }
 
     /**
@@ -59,11 +44,10 @@ class GameController extends Controller
     {
         $game = Game::with('types')->find($id);
 
-        if (is_null($game)) {
-            return  $this->gameNotFound();
+        if (!$game) {
+            return  $this->sendError('Игра не найдена.');
         }
-
-        return response()->json($game, 200);
+        return  $this->sendSuccess('Игра найдена', $game);
     }
 
     /**
@@ -73,32 +57,19 @@ class GameController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id): \Illuminate\Http\JsonResponse
+    public function update(GameRequest $request, $id): \Illuminate\Http\JsonResponse
     {
-
         $game = Game::find($id);
 
-        if (is_null($game)) {
-            return  $this->gameNotFound();
+        if (!$game) {
+            return  $this->sendError('Игра не найдена.');
         }
 
-        $validator = Validator::make($request->all(), [
-            'name'        => 'required|min:3|max:50',
-            'studio'      => 'required|min:3|max:255',
-            'types'       => 'required|array|min:1',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->validError($validator->errors());
-        }
-
-        $game->name   = $request->name;
-        $game->studio = $request->studio;
-        $game->save();
+        $game->update($request->all());
 
         $game->types()->sync($request->types);
 
-        return response()->json('Игра успешно отредактирована - '.$game->name, 200);
+        return  $this->sendSuccess('Игра успешно отредактирована',);
     }
 
     /**
@@ -112,24 +83,23 @@ class GameController extends Controller
         $game = Game::find($id);
 
         if (is_null($game)) {
-            return  $this->gameNotFound();
+            return  $this->sendError('Игра не найдена.');
         }
 
         $game->delete();
-        return response()->json('Игра удалена - '.$game->name, 200);
+        return  $this->sendSuccess('Игра удалена - '.$game->name,);
     }
 
     public function getGamesByType($type): \Illuminate\Http\JsonResponse
     {
-        $games = Game::with('types')->whereHas('types', function ($query) use ($type) {
-            $query->where('name', $type);
-        })->get();
+        $games = new Game;
+        $games = $games->gamesByType($type);
 
         if ($games->isEmpty()) {
-            return  $this->gameNotFound($type);
+            return  $this->sendError('Игр с жанром '.$type.' не найдено.');
         }
 
-        return response()->json($games, 200);
+        return  $this->sendSuccess('игры найдены', $games);
     }
 
 }

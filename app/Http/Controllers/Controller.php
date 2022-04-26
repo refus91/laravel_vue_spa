@@ -25,14 +25,19 @@ class Controller extends BaseController
         return response()->json($response, 422);
     }
 
-    public function gameNotFound($type = null): \Illuminate\Http\JsonResponse
+    public function sendSuccess($message, $success = 'success'): \Illuminate\Http\JsonResponse
     {
-        if (is_null($type)) {
-            $message = 'Игра не найдена.';
-        } else {
-            $message = 'Игр с жанром '.$type.' не найдено.';
-        }
+        $response = [
+            'success' => true,
+            'data'    => $success,
+            'message' => $message,
+        ];
 
+        return response()->json($response, 200);
+    }
+
+    public function sendError($message): \Illuminate\Http\JsonResponse
+    {
         $response = [
             'success' => false,
             'message' => $message,
@@ -40,4 +45,5 @@ class Controller extends BaseController
 
         return response()->json($response, 404);
     }
+
 }

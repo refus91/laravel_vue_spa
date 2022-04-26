@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\JsonResponse;
 
-class GameRequest extends FormRequest
+class RegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +25,10 @@ class GameRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'   => 'required|min:3|max:255',
-            'studio' => 'required|min:3|max:255',
-            'types'  => 'required|array|min:1',
+            'name'        => 'required|min:3|max:50',
+            'email'       => 'required|email|unique:users',
+            'password'    => 'required|min:3',
+            'c_password'  => 'required|same:password',
         ];
     }
 }

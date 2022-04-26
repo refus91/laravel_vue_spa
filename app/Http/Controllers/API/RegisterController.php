@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Requests\RegisterRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -13,47 +14,19 @@ class RegisterController extends Controller
     /**
      * Register api
      *
+     * @param RegisterRequest $request
+     * @param $validator
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(Request $request): \Illuminate\Http\JsonResponse
+    public function register(RegisterRequest $request): \Illuminate\Http\JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'name'        => 'required|min:3|max:50',
-            'email'       => 'required|email',
-            'password'    => 'required|min:3',
-            'c_password'  => 'required|same:password',
-        ]);
-
-        if ($validator->fails()){
-
-            $errors = $validator->errors();
-            $response = [
-                'success' => false,
-                'message' => 'Ошибка валидации.',
-            ];
-
-            if (!empty($errors)){
-                $response['data'] = $errors;
-            }
-
-            return response()->json($response, 422);
-        }
-
         $input = $request->all();
         $input['password']  =  bcrypt($input['password']);
         $user               =  User::create($input);
         $success['token']   =  $user->createToken('App')->plainTextToken;
         $success['name']    =  $user->name;
 
-
-        $response = [
-            'success' => true,
-            'data'    => $success,
-            'message' => 'Пользователь успешно зарегестрирован.',
-        ];
-
-
-        return response()->json($response, 200);
+        return  $this->sendSuccess('Пользователь успешно зарегестрирован.', $success);
     }
 
     /**
@@ -68,23 +41,9 @@ class RegisterController extends Controller
             $success['token']   =  $user->createToken('App')->plainTextToken;
             $success['name']    =  $user->name;
 
-            $response = [
-                'success' => true,
-                'data'    => $success,
-                'message' => 'Пользователь успешно авторизовался.',
-            ];
-
-            return response()->json($response, 200);
-
+            return  $this->sendSuccess('Пользователь успешно авторизовался.', $success);
         } else {
-
-            $response = [
-                'success' => false,
-                'message' => 'Отказано в авторизации.',
-                'data'    => ['error'  =>  'Отказ авторизации'],
-            ];
-
-            return response()->json($response, 401);
+            return  $this->sendError('Отказано в авторизации.',);
         }
     }
 }
