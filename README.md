@@ -1,43 +1,52 @@
-## Laravel CRUD
+## SPA APP
 
-Пример создания CRUD приложения. Приложение использует только возможности Laravel.
+Backend
+- PHP 8
+- Laravel 9
 
-js-фреймворки (jQuery, react, vue, и.т.д) отсутствуют.
+Frontend
+- Vue.js v3 + (vue-router, vuex)
+- Tailwind css v3
 
-В приложении присутствует web api для взаимодействия с базой данных, 
-в которой хранятся данные о видеоиграх.
-
-Версия Laravel - 9
-
-Версия PHP - 8
-
-Версия Bootstrap - 5
-
-
+В приложении реализовано:
+- API
+- Авторизация с помощью пакета Sanctum
+- CRUD
+- Toast 
+- Skeleton loading
+- Pagination
+- Vuex store
+- Popup dialog confirm
+- Выбор игры по жанру
+- Validation field (на стороне сервера)
 ### Как запустить:
 
-- Установить PHP 8+
+- Установить **PHP 8+**
 
-- Установить MySql или Postgres
+- Установить **MySql** или **Postgres**
 
-- Установить composer
+- Установить **composer**
 
 - Клонировать проект git clone https://github.com/refus91/laravel_crud.git
 
-- В файле .env установить ключ приложения (APP_KEY) и настройки подключения к БД (DB_CONNECTION, DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME,DB_PASSWORD)
+- В файле .env установить ключ приложения (**APP_KEY**) и настройки подключения к БД (**DB_CONNECTION, DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME,DB_PASSWORD**)
 
-- В терминале выполнить команду php artisan migrate
+- В терминале выполнить команду ```npm install```
 
-- В терминале выполнить команду php artisan db:seed
+- В терминале выполнить команду ```php artisan migrate```
 
-- В терминале выполнить команду php artisan serve
+- В терминале выполнить команду ```php artisan db:seed```
+
+- В терминале выполнить команду ```npm run dev** или ```npm run watch```
+
+- Открыть новую вкладку в терминале и выполнить команду ```php artisan serve```
 
 - Перейти по указаному адресу 
 
 
 ### API:
 
-Авторизация выполнена с помощью пакета Sanctum. Используйте Postman для теста API
+Используйте Postman для теста API
 
 #### Регистрация и получение токена
 
