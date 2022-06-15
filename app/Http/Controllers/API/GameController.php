@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GameRequest;
 use App\Models\Game;
+use App\Models\GameType;
 
 class GameController extends Controller
 {
@@ -15,8 +16,10 @@ class GameController extends Controller
      */
     public function index(): \Illuminate\Http\JsonResponse
     {
-        $games = Game::with('types')->paginate();
-        return response()->json($games, 200);
+        $games = Game::with('types')->paginate(10);
+        //return response()->json($games, 200);
+//        return  $this->sendSuccess('Success', $games);
+        return $this->sendMessage('Игры найдены', $games, null ,'success',200);
     }
 
     /**
@@ -31,7 +34,8 @@ class GameController extends Controller
 
         $game->types()->sync($request->types);
 
-        return  $this->sendSuccess('Игра успешно добавлена',);
+        return $this->sendMessage("Игра \"{$request->name}\" успешно добавлена.", null, null ,'success',200);
+
     }
 
     /**
@@ -45,9 +49,9 @@ class GameController extends Controller
         $game = Game::with('types')->find($id);
 
         if (!$game) {
-            return  $this->sendError('Игра не найдена.');
+            return  $this->sendMessage('Игра не найдена.',null,null,'danger',404);
         }
-        return  $this->sendSuccess('Игра найдена', $game);
+        return $this->sendMessage("Игра найдена.", $game, null ,'success',200);
     }
 
     /**
@@ -62,14 +66,14 @@ class GameController extends Controller
         $game = Game::find($id);
 
         if (!$game) {
-            return  $this->sendError('Игра не найдена.');
+            return  $this->sendMessage('Игра не найдена.');
         }
 
         $game->update($request->all());
 
         $game->types()->sync($request->types);
 
-        return  $this->sendSuccess('Игра успешно отредактирована',);
+        return $this->sendMessage("Игра \"{$game->name}\" успешно отредактирована.", null, null ,'success',200);
     }
 
     /**
@@ -82,24 +86,30 @@ class GameController extends Controller
     {
         $game = Game::find($id);
 
-        if (is_null($game)) {
-            return  $this->sendError('Игра не найдена.');
+        if (!$game) {
+            return  $this->sendMessage('Игра не найдена.');
         }
 
         $game->delete();
-        return  $this->sendSuccess('Игра удалена - '.$game->name,);
+        return  $this->sendMessage("Игра \"{$game->name}\" успешно удалена", null, null ,'success',200);
     }
 
     public function getGamesByType($type): \Illuminate\Http\JsonResponse
     {
         $games = new Game;
-        $games = $games->gamesByType($type);
+        $games = $type == 'all' ?  $games->paginate(10) : $games->gamesByType($type)->paginate(10);
 
         if ($games->isEmpty()) {
-            return  $this->sendError('Игр с жанром '.$type.' не найдено.');
+            return $this->sendMessage('Игр не найдено.');
         }
+        return $this->sendMessage('Игры найдены.', $games, null ,'success',200);
+    }
 
-        return  $this->sendSuccess('игры найдены', $games);
+    public function getGamesTypes(): \Illuminate\Http\JsonResponse
+    {
+        $types =  GameType::orderBy('name','asc')->get();
+
+        return $this->sendMessage('Игры найдены.', $types, null ,'success',200);
     }
 
 }

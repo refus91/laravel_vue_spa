@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\RegisterController;
@@ -23,9 +22,11 @@ use App\Http\Controllers\API\GameController;
 Route::controller(RegisterController::class)->group(function() {
     Route::post('register', 'register');
     Route::post('login', 'login');
+    Route::post('logout', 'logout')->middleware('auth:sanctum');
 });
 
 Route::middleware('auth:sanctum')->group(function() {
     Route::apiResource('games', GameController::class);
-    Route::get('games/type/{type}', [GameController::class, 'getGamesByType']);
+    Route::get('types/{type}', [GameController::class, 'getGamesByType']);
+    Route::get('types', [GameController::class, 'getGamesTypes']);
 });

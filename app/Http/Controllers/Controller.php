@@ -11,39 +11,39 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function validError($errors): \Illuminate\Http\JsonResponse
+//    public function sendSuccess($message, $data = null): \Illuminate\Http\JsonResponse
+//    {
+//        $response = [
+////            'success' => true,
+//            'data'       => $data,
+//            'message'    => $message,
+//            'alert_type' => 'success'
+//        ];
+//
+//        return response()->json($response, 200);
+//    }
+//
+//    public function sendError($message, $alert_type = 'danger'): \Illuminate\Http\JsonResponse
+//    {
+//        $response = [
+////            'success'    => false,
+//            'message'    => $message,
+//            'alert_type' => $alert_type
+//        ];
+//
+//        return response()->json($response, 422);
+//    }
+
+    public function sendMessage($message, $data = null, $errors = null, $alert_type = 'danger', $code = 422): \Illuminate\Http\JsonResponse
     {
         $response = [
-            'success' => false,
-            'message' => 'Ошибка валидации.',
+            'errors'     => $errors,
+            'data'       => $data,
+            'message'    => $message,
+            'alert_type' => $alert_type
         ];
 
-        if (!empty($errors)){
-            $response['data'] = $errors;
-        }
-
-        return response()->json($response, 422);
-    }
-
-    public function sendSuccess($message, $success = 'success'): \Illuminate\Http\JsonResponse
-    {
-        $response = [
-            'success' => true,
-            'data'    => $success,
-            'message' => $message,
-        ];
-
-        return response()->json($response, 200);
-    }
-
-    public function sendError($message): \Illuminate\Http\JsonResponse
-    {
-        $response = [
-            'success' => false,
-            'message' => $message,
-        ];
-
-        return response()->json($response, 404);
+        return response()->json($response, $code);
     }
 
 }

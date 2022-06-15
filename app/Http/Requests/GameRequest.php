@@ -24,7 +24,7 @@ class GameRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'   => 'required|min:3|max:255',
+            'name'   => 'required|min:3|max:255|unique:games',
             'studio' => 'required|min:3|max:255',
             'types'  => 'required|array|min:1',
         ];

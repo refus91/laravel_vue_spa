@@ -43,7 +43,7 @@ return [
     'digits_between' => 'The :attribute must be between :min and :max digits.',
     'dimensions' => 'The :attribute has invalid image dimensions.',
     'distinct' => 'The :attribute field has a duplicate value.',
-    'email' => ':attribute должен быть валидным.',
+    'email' => ':attribute должен соответствовать формату - example@example.com.',
     'ends_with' => 'The :attribute must end with one of the following: :values.',
     'enum' => 'The selected :attribute is invalid.',
     'exists' => 'The selected :attribute is invalid.',
@@ -114,7 +114,8 @@ return [
     'required_with_all' => 'The :attribute field is required when :values are present.',
     'required_without' => 'The :attribute field is required when :values is not present.',
     'required_without_all' => 'The :attribute field is required when none of :values are present.',
-    'same' => 'The :attribute and :other must match.',
+//    'same' => 'The :attribute and :other must match.',
+    'same' => ':attribute и :other должны совпадать.',
     'size' => [
         'array' => 'The :attribute must contain :size items.',
         'file' => 'The :attribute must be :size kilobytes.',
@@ -148,6 +149,7 @@ return [
             'required'  => 'Обязательное поле',
             'min'       => 'Слишком короткое название, минимум :min символа',
             'max'       => 'Слишком длинное название, максимум :max символов',
+            'unique'    => 'Название должено быть уникальным',
         ],
         'studio' => [
             'required'  => 'Обязательное поле',
@@ -164,6 +166,7 @@ return [
         ],
         'password' => [
             'required'  => 'Обязательное поле',
+            'min'       => 'Слишком короткий пароль, минимум :min символа',
 
         ],
         'c_password' => [
@@ -183,6 +186,9 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'password' =>'пароль',
+        'c_password' =>'подтверждение пароля'
+    ],
 
 ];

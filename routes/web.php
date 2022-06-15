@@ -1,8 +1,7 @@
 <?php
 
-use App\Http\Controllers\GameController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\MainController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 //Route::get('/', function () {
 //    return view('welcome');
 //});
-Route::redirect('/','games');
 
-Route::resource('games',GameController::class);
+//Route::get('{any}', function () {
+//    return view('app');
+//})->where('any', '.*');
+
+Route::get('{any}', [MainController::class, 'index'])->where('any', '.*');;

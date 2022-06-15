@@ -18,11 +18,12 @@ class Game extends Model
         return $this->belongsToMany(GameType::class, 'game_type', 'game_id', 'type_id')->orderBy('name');
     }
 
+
     public function gamesByType($type)
     {
 
         return $this->with('types')->whereHas('types', function ($query) use ($type) {
             $query->where('name', $type);
-        })->get();
+        });
     }
 }
