@@ -5,7 +5,7 @@ Backend
 - Laravel 9
 
 Frontend
-- Vue.js v3 + (vue-router, vuex)
+- Vue.js v3 + (vue-router v4, vuex v4)
 - Tailwind css v3
 
 В приложении реализовано:
